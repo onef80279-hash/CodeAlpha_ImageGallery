@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAlpha Image Gallery</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+
+    <h1>Image Gallery</h1>
+
+    <!-- Filter Buttons -->
+    <div class="filters">
+        <button class="active">All</button>
+        <button>Nature</button>
+        <button>Animals</button>
+        <button>City</button>
+        <button>Cars</button>
+        <button>Gaming</button>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery">
+
+        <!-- Nature -->
+        <div class="image-box nature">
+            <img src="https://picsum.photos/id/1015/600/400" alt="Nature 1">
+        </div>
+
+        <div class="image-box nature">
+            <img src="https://picsum.photos/id/1043/600/400" alt="Nature 2">
+        </div>
+
+        <div class="image-box nature">
+            <img src="https://picsum.photos/id/1056/600/400" alt="Nature 3">
+        </div>
+
+        <!-- Animals -->
+        <div class="image-box animals">
+            <img src="https://picsum.photos/id/1025/600/400" alt="Animal 1">
+        </div>
+
+        <div class="image-box animals">
+            <img src="https://picsum.photos/id/1074/600/400" alt="Animal 2">
+        </div>
+
+        <div class="image-box animals">
+            <img src="https://picsum.photos/id/237/600/400" alt="Animal 3">
+        </div>
+
+        <!-- City -->
+        <div class="image-box city">
+            <img src="https://picsum.photos/id/1031/600/400" alt="City 1">
+        </div>
+
+        <div class="image-box city">
+            <img src="https://picsum.photos/id/1011/600/400" alt="City 2">
+        </div>
+
+        <div class="image-box city">
+            <img src="https://picsum.photos/id/1060/600/400" alt="City 3">
+        </div>
+
+        <!-- Cars -->
+        <div class="image-box cars">
+            <img src="https://picsum.photos/id/111/600/400" alt="Car 1">
+        </div>
+
+        <div class="image-box cars">
+            <img src="https://picsum.photos/id/133/600/400" alt="Car 2">
+        </div>
+
+        <div class="image-box cars">
+            <img src="https://picsum.photos/id/183/600/400" alt="Car 3">
+        </div>
+
+        <!-- Gaming -->
+        <div class="image-box gaming">
+            <img src="https://picsum.photos/id/180/600/400" alt="Gaming 1">
+        </div>
+
+        <div class="image-box gaming">
+            <img src="https://picsum.photos/id/119/600/400" alt="Gaming 2">
+        </div>
+
+        <div class="image-box gaming">
+            <img src="https://picsum.photos/id/250/600/400" alt="Gaming 3">
+        </div>
+
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+
+        <span class="close">&times;</span>
+
+        <img id="lightbox-img" src="" alt="Preview">
+
+        <div class="nav-buttons">
+            <button id="prevBtn">Previous</button>
+            <button id="nextBtn">Next</button>
+        </div>
+
+    </div>
+
+    <!-- JavaScript File -->
+    <script src="script.js">
+
+
+// Select Elements
+const galleryImages = document.querySelectorAll(".image-box img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.querySelector(".close");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+let currentIndex = 0;
+
+// Store image sources
+const imageSources = [];
+
+galleryImages.forEach((img) => {
+    imageSources.push(img.src);
+});
+
+// Open Lightbox
+galleryImages.forEach((img, index) => {
+    img.addEventListener("click", () => {
+        currentIndex = index;
+        lightbox.style.display = "flex";
+        lightboxImg.src = imageSources[currentIndex];
+    });
+});
+
+// Close Lightbox
+closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+});
+
+// Close when clicking outside image
+lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+        lightbox.style.display = "none";
+    }
+});
+
+// Next Image
+nextBtn.addEventListener("click", () => {
+    currentIndex++;
+
+    if (currentIndex >= imageSources.length) {
+        currentIndex = 0;
+    }
+
+    lightboxImg.src = imageSources[currentIndex];
+});
+
+// Previous Image
+prevBtn.addEventListener("click", () => {
+    currentIndex--;
+
+    if (currentIndex < 0) {
+        currentIndex = imageSources.length - 1;
+    }
+
+    lightboxImg.src = imageSources[currentIndex];
+});
+
+// Filter Functionality
+const filterButtons = document.querySelectorAll(".filters button");
+const imageBoxes = document.querySelectorAll(".image-box");
+
+filterButtons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+
+        // Active Button
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const filterValue = button.textContent.toLowerCase();
+
+        imageBoxes.forEach((box) => {
+
+            if (
+                filterValue === "all" ||
+                box.classList.contains(filterValue)
+            ) {
+                box.style.display = "block";
+            } else {
+                box.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+    </script>
+
+</body>
+</html>
+
+
